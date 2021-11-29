@@ -1,0 +1,27 @@
+// .popUp {
+//   background-color: #6b00ff;
+//   padding: 4px 12px;
+//   color: white;
+//   font-size: 16px;
+// }
+
+.myPopup {
+  .leaflet-popup-content-wrapper {
+    background: #6b00ff;
+    margin-left: 12px;
+    margin-bottom: 12px;
+    color: white;
+    font-size: 16px;
+    border-radius: 100px;
+    .leaflet-popup-content {
+      min-width: fit-content;
+      padding: 4px 12px;
+      .popup {
+        white-space: nowrap;
+      }
+    }
+  }
+  .leaflet-popup-tip-container {
+    display: none;
+  }
+}
