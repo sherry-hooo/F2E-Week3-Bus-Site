@@ -8,38 +8,65 @@ const apiClient = axios.create({
 
 // 請求攔截器
 apiClient.interceptors.request.use((config) => {
-  console.log("攔截器", config);
   config.headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
     ...getAuthorizationHeader(),
   };
-  console.log("攔截器", config);
   return config;
 });
 
 export default {
   getCityBusStation(city) {
-    return apiClient.get(`/Station/City/${city}?$format=JSON`);
+    console.log("發station");
+    return apiClient.get(`/Station/City/${city}/?&$format=JSON`);
   },
   getCityBusRoute(city) {
-    return apiClient.get(`/Route/City/${city}?$format=JSON`);
+    console.log("發route");
+    return apiClient.get(`/Route/City/${city}/?&$format=JSON`);
   },
-  getCityBusInfo(mode, city, top, skip) {
-    console.log(mode, city, top, skip);
-    return apiClient.get(
-      `/${mode}/City/${city}/?${top === 0 ? "" : `$top=${top}`}&${
-        skip === 0 ? "" : `$skip=${skip}`
-      }&$format=JSON`
-    );
+  getOneCityBusRoute(city, route, UID) {
+    return apiClient.get(`/Route/City/${city}/${route}`, {
+      params: {
+        $filter: `RouteUID eq '${UID}'`,
+        $format: "JSON",
+      },
+    });
   },
-  getStopOfRoute(city, routeName) {
-    return apiClient.get(`/StopOfRoute/City/${city}/${routeName}?$format=JSON`);
+  getRouteDestination(city, route, UID) {
+    return apiClient.get(`/Route/City/${city}/${route}`, {
+      params: {
+        $select: `DestinationStopNameZh, DepartureStopNameZh`,
+        $filter: `RouteUID eq '${UID}'`,
+        $format: "JSON",
+      },
+    });
   },
-  getETARoute(city, routeName) {
-    return apiClient.get(
-      `/EstimatedTimeOfArrival/City/${city}/${routeName}?$format=JSON`
-    );
+  getStopOfRoute(city, routeName, UID) {
+    console.log("發公車路線");
+    return apiClient.get(`/StopOfRoute/City/${city}/${routeName}`, {
+      params: {
+        $filter: `RouteUID eq '${UID}'`,
+        $format: "JSON",
+      },
+    });
+  },
+  getETARoute(city, routeName, UID) {
+    console.log("發到站時間", city, routeName, UID);
+    return apiClient.get(`/EstimatedTimeOfArrival/City/${city}/${routeName}`, {
+      params: {
+        $filter: `RouteUID eq '${UID}'`,
+        $format: "JSON",
+      },
+    });
+  },
+  getNearbyStation(lat = 23.4751824, lon = 120.4614314, distance = 300) {
+    return apiClient.get(`/Station/NearBy`, {
+      params: {
+        $spatialFilter: `nearby(${lat}, ${lon}, ${distance})`,
+        $format: "JSON",
+      },
+    });
   },
 };
 

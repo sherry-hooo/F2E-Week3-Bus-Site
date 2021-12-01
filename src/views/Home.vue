@@ -22,14 +22,14 @@
 </template>
 
 <script>
-import Search_Bar from '@/components/SearchBar.vue'
-import card_Route from '@/components/Card_Route.vue'
-import card_Station from '@/components/Card_Station.vue'
-import Loading from '@/components/Loading.vue'
-import getApi from '@/service/getApi.js'
+import Search_Bar from "@/components/SearchBar.vue";
+import card_Route from "@/components/Card_Route.vue";
+import card_Station from "@/components/Card_Station.vue";
+import Loading from "@/components/Loading.vue";
+import getApi from "@/service/getApi.js";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     Search_Bar,
     card_Route,
@@ -39,55 +39,55 @@ export default {
   data() {
     return {
       allRouteData: [],
-      chosedCityLink: '',
-      userKeyIn: '',
-      searchMode: 'Route',
+      chosedCityLink: "",
+      userKeyIn: "",
+      searchMode: "Route",
       displayCount: 20,
       displayedCards: [],
       isLoading: false,
-    }
+    };
   },
   methods: {
     storeSession(data) {
       // this.$store.dispatch('showRouteInfo', route)
-      sessionStorage.setItem(`${this.searchMode}Data`, JSON.stringify(data))
+      sessionStorage.setItem(`${this.searchMode}Data`, JSON.stringify(data));
     },
     emitsearchMode(mode) {
-      console.log('確認 emit 的search mode ->  ', mode) // check mode
-      this.searchMode = mode
-      this.userKeyIn = ''
-      this.displayedCards = []
+      console.log("確認 emit 的search mode ->  ", mode); // check mode
+      this.searchMode = mode;
+      this.userKeyIn = "";
+      this.displayedCards = [];
     },
     emitUserKeyin(keyin) {
-      console.log('確認 emit input -> ', keyin)
-      this.userKeyIn = keyin
-      this.getCardsData(this.allRouteData, this.displayCount)
+      console.log("確認 emit input -> ", keyin);
+      this.userKeyIn = keyin;
+      this.getCardsData(this.allRouteData, this.displayCount);
     },
     emitchosedCity(city) {
-      console.log('確認 emit city -> ', city)
-      this.chosedCityLink = city.cityLink
-      this.userKeyIn = ''
-      this.displayedCards = []
-      this.getApi()
+      console.log("確認 emit city -> ", city);
+      this.chosedCityLink = city.cityLink;
+      this.userKeyIn = "";
+      this.displayedCards = [];
+      this.getApi();
     },
     getCityStationApi(city) {
       return getApi
         .getCityBusStation(city)
-        .then((res) => (this.allRouteData = res.data))
+        .then((res) => (this.allRouteData = res.data));
     },
     getCityRouteApi(city) {
       return getApi
         .getCityBusRoute(city)
-        .then((res) => (this.allRouteData = res.data))
+        .then((res) => (this.allRouteData = res.data));
     },
     async getApi() {
-      this.isLoading = true
-      if (this.searchMode === 'Route') {
-        await this.getCityRouteApi(this.chosedCityLink)
-        this.isLoading = false
+      this.isLoading = true;
+      if (this.searchMode === "Route") {
+        await this.getCityRouteApi(this.chosedCityLink);
+        this.isLoading = false;
       } else {
-        await this.getCityStationApi(this.chosedCityLink)
-        this.isLoading = false
+        await this.getCityStationApi(this.chosedCityLink);
+        this.isLoading = false;
       }
     },
     // async getApi() {
@@ -105,7 +105,7 @@ export default {
     //   }
     // },
     loadMoreData() {
-      console.log('scroll event')
+      console.log("scroll event");
     },
     // loadMoreData() {
     //   console.log('scroll event')
@@ -122,32 +122,32 @@ export default {
     // },
     getCardsData(originData) {
       if (this.allRouteData === []) {
-        return
+        return;
       }
-      if (this.userKeyIn === '*') {
-        this.displayedCards = originData
-      } else if (this.searchMode === 'Route') {
+      if (this.userKeyIn === "*") {
+        this.displayedCards = originData;
+      } else if (this.searchMode === "Route") {
         this.displayedCards = originData
           .filter((route) => {
-            return route.RouteName.Zh_tw.includes(this.userKeyIn)
+            return route.RouteName.Zh_tw.includes(this.userKeyIn);
           })
-          .slice(0, this.displayCount)
+          .slice(0, this.displayCount);
       } else {
         this.displayedCards = originData
           .filter((station) =>
-            station.StationName['Zh_tw'].includes(this.userKeyIn),
+            station.StationName["Zh_tw"].includes(this.userKeyIn)
           )
-          .slice(0, this.displayCount)
+          .slice(0, this.displayCount);
       }
     },
   },
   mounted() {
-    document.addEventListener('scroll', this.loadMoreData)
+    document.addEventListener("scroll", this.loadMoreData);
   },
   unmounted() {
-    document.removeEventListener('scroll', this.loadMoreData)
+    document.removeEventListener("scroll", this.loadMoreData);
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -155,13 +155,13 @@ export default {
 
 main {
   min-height: calc(100vh - 80px);
-  background-image: url('~@/assets/img/searchBus-sm.png');
+  background-image: url("~@/assets/img/searchBus-sm.png");
   background-position: bottom;
   background-size: 100% auto;
   background-repeat: no-repeat;
 
   @include breakpoint.tablet {
-    background-image: url('~@/assets/img/searchBus.png');
+    background-image: url("~@/assets/img/searchBus.png");
     background-size: contain;
   }
   h2 {
