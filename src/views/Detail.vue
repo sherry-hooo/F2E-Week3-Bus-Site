@@ -33,8 +33,6 @@
       :mode="mode"
     ></component>
   </keep-alive>
-
-  <!-- <router-view /> -->
 </template>
 
 <script>
@@ -75,7 +73,6 @@ export default {
     },
   },
   beforeRouteUpdate(to) {
-    console.log('跳轉頁面', to)
     this.currentTab = to.params.mode
   },
 }
