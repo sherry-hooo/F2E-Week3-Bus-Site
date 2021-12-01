@@ -1,30 +1,39 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <Nav></Nav>
   <router-view />
 </template>
 
+<script>
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap'
+import Nav from '@/components/Nav.vue'
+
+export default {
+  components: { Nav },
+}
+</script>
+
 <style lang="scss">
+@use "@/assets/scss/abstract/_reset.scss";
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  // font-family: Avenir, Helvetica, Arial, sans-serif;
+  // -webkit-font-smoothing: antialiased;
+  // -moz-osx-font-smoothing: grayscale;
+  font-family: Roboto;
   text-align: center;
   color: #2c3e50;
+  background: #d4d4d4;
+  min-height: 100vh;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+main {
+  padding: 60px 16px 0;
+  @include breakpoint.tablet {
+    padding: 60px 30px 0;
+  }
+  @include breakpoint.desktop {
+    padding: 60px 100px 0;
   }
 }
 </style>
