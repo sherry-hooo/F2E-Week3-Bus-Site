@@ -1,7 +1,6 @@
-const deployWebsite = Window.location;
-
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? decideRoot() : "/",
+  publicPath:
+    process.env.NODE_ENV === "production" ? "/F2E-Week3-Bus-Site/" : "/",
   css: {
     loaderOptions: {
       // pass options to sass-loader
@@ -19,7 +18,3 @@ module.exports = {
     },
   },
 };
-
-function decideRoot() {
-  return deployWebsite.includes("onrender.com") ? "/" : "/F2E-Week3-Bus-Site/";
-}
